@@ -11,7 +11,7 @@ http://localhost:55000
 ```
 
 **ディレクトリ構成図**
-
+<pre>
 Desktop/
 └── work_space/ 　　#←親ディレクトリ（ここでgit initと git clone初回のみ）
     ├── .git
@@ -36,3 +36,4 @@ Desktop/
         ├── .env
         ├── docker-compose.yml         # Spring-Hackathon用Docker-composeファイル
         └── requirements.txt           # Spring-Hackathon用requirements.txt
+</pre>
