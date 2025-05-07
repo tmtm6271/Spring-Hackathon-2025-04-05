@@ -1,0 +1,29 @@
+{% extends 'auth/base.html' %}
+{% block title %}
+sign up
+{% endblock %}
+
+{% block body %}
+    <h2 class = "section-title">チャットアプリ名</h2>
+    <div class="sign_up">
+        <form action="/home" method="POST">
+            <label for="mail_adress">メールアドレス</label>
+            <p>
+                <input 
+                type="text"
+                name="email"
+                >
+            </p>
+            <label for="password">パスワード</label>
+            <p>
+                <input 
+                type="text"
+                name="password"
+                >
+            </p>
+            <div class="sign_up_submit">
+                 <input type="submit" value="新規登録">
+            </div>
+        </form>
+    </div>
+{% endblock %}

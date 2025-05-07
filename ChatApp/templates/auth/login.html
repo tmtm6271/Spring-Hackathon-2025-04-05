@@ -1,16 +1,42 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
-</head>
-<body>
+{% extends 'auth/base.html' %}
+{% block title %}
+login
+{% endblock %}
+
+{% block body %}
     <!--
     <img src="./image/profile_image.png" alt="プロフィール画像">
     --> 
     <img src="../../static/img/auth.png" alt="サンプル画像">
+    <!--
     <h1>Raretechハッカソン2025春</h1>
     <p>Hチームのチャットアプリです。</p>
-</body>
-</html>
+    -->
+    <h2 class = "section-title">チャットアプリ名</h2>
+    <div class="login">
+        <form action="/home" method="POST">
+            <label for="mail_adress">メールアドレス</label>
+            <p>
+                <input 
+                type="text"
+                name="email"
+                >
+            </p>
+            <label for="password">パスワード</label>
+            <p>
+                <input 
+                type="text"
+                name="password"
+                >
+            </p>
+            <div class="login_submit">
+                 <input type="submit" value="ログイン">
+            </div>
+        </form>
+        <p>
+        <div class="sign_up">
+            <input type="submit" value="新規登録">
+        </div>
+        </p>  
+    </div>
+{% endblock %}
