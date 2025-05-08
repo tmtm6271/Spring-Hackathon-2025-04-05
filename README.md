@@ -11,22 +11,21 @@ http://localhost:55000
 ```
 
 **ディレクトリ構成図**
-<pre>
+
 Desktop/
 └── work_space/ 　　#←親ディレクトリ（ここでgit initと git clone初回のみ）
     ├── .git
     └── Spring-Hackathon-2025-04-05/　# 作業ディレクトリ（修正作業やpushを行う）
-        ├── .git                         # ★ここで作業ブランチに変更する
-        ├── ChatApp
-        │   ├── __init__.py
-        │   ├── app.py
-        │   ├── models.py
-        │   ├── static /                  # 画像などの静的ファイル用ディレクトリ
-        │   ├── templates /               # Template(HTML)用ディレクトリ
-        │   │   ├──auth /                 # ログインやサインアップ関係のhtmlファイル
-        │   │   ├──error /                # エラー関係
-        │   │   ├──model /                # チャットルーム関係
-        │   │   └──util /                 # ヘッダーやサイドバーなど            
+        ├── __init__.py
+        ├── app.py
+        ├── models.py
+        ├── static /                  # 画像などの静的ファイル用ディレクトリ
+        ├── templates /               # Template(HTML)用ディレクトリ
+        │   ├──auth /                 # ログイン関係
+        │   ├──error /                # エラー関係
+        │   ├──model /                # チャットルーム関係
+        │   └──util /                 # ヘッダーやサイドバー
+        ├── util/                     
         ├── Docker/
         │   ├── Flask/
         │   │   └── Dockerfile           # Flask(Python)用Dockerファイル
@@ -36,7 +35,4 @@ Desktop/
         │       └── my.cnf
         ├── .env
         ├── docker-compose.yml         # Spring-Hackathon用Docker-composeファイル
-        ├── .gitignore
-        ├── README.md
         └── requirements.txt           # Spring-Hackathon用requirements.txt
-</pre>
