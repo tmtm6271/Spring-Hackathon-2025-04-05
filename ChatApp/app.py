@@ -52,7 +52,7 @@ def signup_process():
     pass
 
 
-# チャンネル一覧ページ
+# チャットルーム一覧ページ
 @app.route('/room/<cid>/message', methods=['GET'])
 def room_page():
     pass
@@ -65,33 +65,45 @@ def room_create():
 
 
 # チャットルーム編集処理
-@app.route('/room/update/<cid>')
+@app.route('/room/update/<cid>', methods=['POST'])
 def room_update():
     pass
 
 
 # チャットルーム削除処理
-#@app.route()
+@app.route('/room/delete/<cid>', methods=['POST'])
+def room_delete():
+    pass
 
 
-#　チャットメッセージ画面表示
-
+# チャットメッセージ画面表示
+@app.rooute('/room/<cid>/message', methods=['GET'])
+def message_page():
+    pass
 
 
 # メッセージ送信処理
-
+@app.route('/room/<cid>/message', methods=['POST'])
+def message_create():
+    pass
 
 
 # メッセージ編集処理
-
+@app.route('/room/<cid>/message/<message_id>', methods=['POST'])
+def message_update():
+    pass
 
 
 # メッセージ削除処理
-
+@app.route('/room/<cid>/message/<message_id>', methods=['POST'])
+def message_delete():
+    pass
 
 
 # メッセージ翻訳処理
-
+@app.route('/room/<cid>/message/<message_id>', methods=['POST'])
+def message_translation():
+    pass
 
 
 # mainメソッド
