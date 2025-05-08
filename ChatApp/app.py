@@ -46,7 +46,6 @@ def logout():
 def signup_page():
     return render_template('auth/sign_up.html')
 
-
 # サインアップ処理
 @app.route('/signup',methods=['POST'])
 def signup_process():
@@ -54,7 +53,7 @@ def signup_process():
 
 
 # チャンネル一覧ページ
-@app.route('/rooms', methods=['GET'])
+@app.route('/room/<cid>/message', methods=['GET'])
 def room_page():
     pass
 
@@ -72,15 +71,11 @@ def room_update():
 
 
 # チャットルーム削除処理
-@app.route('/room/delete/<cid>', methods=['POST'])
-def room_delete():
-    pass
+#@app.route()
 
 
 #　チャットメッセージ画面表示
-@app.route('/room/<cid>/message', methods=['GET'])
-def message_page():
-    pass
+
 
 
 # メッセージ送信処理
