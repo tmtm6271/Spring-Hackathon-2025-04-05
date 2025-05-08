@@ -4,9 +4,17 @@ sign up
 {% endblock %}
 
 {% block body %}
-    <h2 class = "section-title">チャットアプリ名</h2>
+    <h2 class = "section-title">新規アカウントを作成</h2>
+    <p>既に登録済みの場合は、<a href="login.html">こちら</a>でログインしてください</p>
     <div class="sign_up">
         <form action="/home" method="POST">
+            <label for="user_name">名前</label>
+            <p>
+                <input 
+                type="text"
+                name="name"
+                >
+            </p>
             <label for="mail_adress">メールアドレス</label>
             <p>
                 <input 
