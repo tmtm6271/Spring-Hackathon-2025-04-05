@@ -7,31 +7,64 @@ CREATE DATABASE chatapp;
 USE chatapp
 GRANT ALL PRIVILEGES ON chatapp.* TO 'testuser';
 
+CREATE TABLE companies (
+    company_id INT AUTO_INCREMENT PRIMARY KEY,
+    company_name VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+
 CREATE TABLE users (
-    uid VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) PRIMARY KEY,
+    FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE,
     user_name VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+    pass VARCHAR(255) NOT NULL,
+    signup_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_login_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE channels (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    uid VARCHAR(255) NOT NULL,
-    name VARCHAR(255) UNIQUE NOT NULL,
-    abstract VARCHAR(255),
-    FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE
+CREATE TABLE rooms (
+    room_id INT AUTO_INCREMENT PRIMARY KEY,
+    FOREIGN KEY (owner_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    room_name VARCHAR(255) UNIQUE NOT NULL,
+    visibility INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE room_members(
+    room_member_id INT AUTO_INCREMENT PRIMARY KEY,
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(room_id) REFERENCES rooms(room_id) ON DELETE CASCADE,
+    privilege VARCHAR(255) NOT NULL,
+    joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_accessed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+
+CREATE TABLE files(
+    file_id INT AUTO_INCREMENT PRIMARY KEY,
+    FOREIGN KEY(message_id) REFERENCES messages(message_id) ON DELETE CASCADE,
+    display_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(255) NOT NULL
+)
 
 CREATE TABLE messages (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    uid VARCHAR(255) NOT NULL,
-    cid INT NOT NULL,
-    message TEXT,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE,
-    FOREIGN KEY (cid) REFERENCES channels(id) ON DELETE CASCADE
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    FOREIGN KEY (room_member_id) REFERENCES room_members(room_member_id) ON DELETE CASCADE,
+    file_id INT,
+    original_message VARCHAR(10000) NOT NULL,
+    translated_message VARCHAR(10000) DEFAULT NULL,
+    first_sent_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users(uid, user_name, email, password) VALUES('970af84c-dd40-47ff-af23-282b72b7cca8','テスト','test@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578');
-INSERT INTO channels(id, uid, name, abstract) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8','ぼっち部屋','テストさんの孤独な部屋です');
-INSERT INTO messages(id, uid, cid, message) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8', '1', '誰かかまってください、、')
+INSERT INTO companies(company_name) VALUES ('テスト株式会社');
+INSERT INTO users(user_id, company_id, user_name, email, pass) VALUES
+    ('test_user_0001', 1, 'テストユーザー1', 'test1@gmail.com', 'testest1'),
+    ('test_user_0002', 1, 'テストユーザー2', 'test2@gmail.com', 'testest2'),
+    ('test_user_0003', 1, 'テストユーザー3', 'test3@gmail.com', 'testest3');
+INSERT INTO rooms(owner_id, room_name) VALUES('test_user_0001', 'ぼっち部屋');
+INSERT INTO room_members(user_id, room_id, privilege) VALUES
+    ('test_user_0001', 1, 'admin'),
+    ('test_user_0002', 1, 'member');
