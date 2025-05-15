@@ -12,31 +12,55 @@ login
     <h1>Raretechハッカソン2025春</h1>
     <p>Hチームのチャットアプリです。</p>
     -->
-    <h2 class = "section-title">チャットアプリ名</h2>
-    <div class="login">
-        <form method="POST">
-            <label for="mail_adress">メールアドレス</label>
-            <p>
-                <input 
-                type="text"
-                name="email"
-                >
-            </p>
-            <label for="password">パスワード</label>
-            <p>
-                <input 
-                type="text"
-                name="password"
-                >
-            </p>
-            <div class="login_submit">
-                 <input type="submit" value="ログイン">
-            </div>
-        </form>
-        <p>
-        <div class="sign_up">
-            <input type="submit" value="新規登録">
+    <div class="auth_wrapper">
+        <h2 class = "section-title">Langly</h2>
+        <div class="login">
+            <form action="{{url_for('login_process')}}" method="POST">
+                <label for="mail_adress">メールアドレス</label>
+                <p>
+                    <input 
+                    type="text"
+                    name="email"
+                    />
+                </p>
+                <label for="password">パスワード</label>
+                <p>
+                    <input 
+                    type="password"
+                    name="password"
+                    />
+                </p>
+                <div class="login-button-container">
+                    {% with messages = get_flashed_messages() %} {% if messages %}
+                    <ul class="flashes">
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} {% endwith %}
+                    <p>
+                        <div class="login_submit">
+                            <button 
+                            type="submit" 
+                            value="login"
+                            name="action">
+                            ログイン
+                            </button>
+                        </div>
+                    </p>
+                    <p>
+                        <div class="sign_up">
+                            <button 
+                            type="submit" 
+                            value="signup"
+                            name="action">
+                            新規登録
+                            </button>
+                        </div>
+                    </p>
+                </div>
+            </form>
+            
         </div>
-        </p>  
     </div>
 {% endblock %}
