@@ -4,15 +4,23 @@ sign up
 {% endblock %}
 
 {% block body %}
-    <h2 class = "section-title">新規アカウントを作成</h2>
-    <p>既に登録済みの場合は、<a href="login.html">こちら</a>でログインしてください</p>
-    <div class="sign_up">
-        <form action="/home" method="POST">
+    
+    <div class="sign_up_wrapper">
+        <h2 class = "section-title">新規アカウントを作成</h2>
+        <p>既に登録済みの場合は、<a href="login.html">こちら</a>でログインしてください</p>
+        <form action="{{url_for ('signup_process')}}" method="POST">
+            <label for="user_name">会社名</label>
+            <p>
+                <input 
+                type="text"
+                name="company_name"
+                >
+            </p>
             <label for="user_name">名前</label>
             <p>
                 <input 
                 type="text"
-                name="name"
+                name="user_name"
                 >
             </p>
             <label for="mail_adress">メールアドレス</label>
@@ -25,12 +33,28 @@ sign up
             <label for="password">パスワード</label>
             <p>
                 <input 
-                type="text"
-                name="password"
+                type="password"
+                name="pass"
                 >
             </p>
-            <div class="sign_up_submit">
-                 <input type="submit" value="新規登録">
+            <div class ="auth-button-container">
+                {% with messages = get_flashed_messages() %} {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                    <li>
+                        {{message}}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %} {% endwith %}
+                <div class="sign_up">
+                    <button 
+                    type="submit" 
+                    value="signup"
+                    name="action">
+                    新規登録
+                    </button>
+                </div>
             </div>
         </form>
     </div>

@@ -4,63 +4,63 @@ login
 {% endblock %}
 
 {% block body %}
-    <!--
-    <img src="./image/profile_image.png" alt="プロフィール画像">
-    --> 
-    <img src="../../static/img/auth.png" alt="サンプル画像">
-    <!--
-    <h1>Raretechハッカソン2025春</h1>
-    <p>Hチームのチャットアプリです。</p>
-    -->
-    <div class="auth_wrapper">
-        <h2 class = "section-title">Langly</h2>
-        <div class="login">
-            <form action="{{url_for('login_process')}}" method="POST">
-                <label for="mail_adress">メールアドレス</label>
+<!--
+<img src="./image/profile_image.png" alt="プロフィール画像">
+--> 
+<img src="../../static/img/auth.png" alt="サンプル画像">
+<!--
+<h1>Raretechハッカソン2025春</h1>
+<p>Hチームのチャットアプリです。</p>
+-->
+<div class="auth_wrapper">
+    <h2 class = "section-title">Langly</h2>
+    <div class="login">
+        <form action="{{url_for('login_process')}}" method="POST">
+            <label for="mail_adress">メールアドレス</label>
+            <p>
+                <input class="input_box"
+                type="text"
+                name="email"
+                />
+            </p>
+            <label for="password">パスワード</label>
+            <p>
+                <input class="input_box"
+                type="password"
+                name="pass"
+                />
+            </p>
+            <div class="auth-button-container">
+                {% with messages = get_flashed_messages() %} {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %} {% endwith %}
                 <p>
-                    <input 
-                    type="text"
-                    name="email"
-                    />
+                    <div class="login_submit">
+                        <button 
+                        type="submit" 
+                        value="login"
+                        name="action">
+                        ログイン
+                        </button>
+                    </div>
                 </p>
-                <label for="password">パスワード</label>
                 <p>
-                    <input 
-                    type="password"
-                    name="password"
-                    />
+                    <div class="sign_up">
+                        <button 
+                        type="submit" 
+                        value="signup"
+                        name="action">
+                        新規登録
+                        </button>
+                    </div>
                 </p>
-                <div class="login-button-container">
-                    {% with messages = get_flashed_messages() %} {% if messages %}
-                    <ul class="flashes">
-                        {% for message in messages %}
-                        <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %} {% endwith %}
-                    <p>
-                        <div class="login_submit">
-                            <button 
-                            type="submit" 
-                            value="login"
-                            name="action">
-                            ログイン
-                            </button>
-                        </div>
-                    </p>
-                    <p>
-                        <div class="sign_up">
-                            <button 
-                            type="submit" 
-                            value="signup"
-                            name="action">
-                            新規登録
-                            </button>
-                        </div>
-                    </p>
-                </div>
-            </form>
-            
-        </div>
+            </div>
+        </form>
+        
     </div>
+</div>
 {% endblock %}
