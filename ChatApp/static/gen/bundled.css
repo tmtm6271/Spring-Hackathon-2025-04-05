@@ -1,0 +1,58 @@
+/* ログイン画面全体のCSS */
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+}
+
+
+/*　ログイン,サインアップ画面共通 CSS */
+label{
+    font-weight: bold;
+}
+
+/* ログイン,サインアップの入力BOXのCSS */
+.mail_input{
+    margin-top: 10px;
+}
+
+.pass_input{
+    margin-top: 30px;
+}
+
+.input_box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 40px;
+    width: 500PX;
+    border: 1px solid black;
+    background-color: #e5e5e5;
+}
+
+.auth-button-container{
+    margin-top: 30px;
+}
+
+.button_wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button{
+    width: 250px;
+    height: 45px;
+    margin-bottom: 20px;
+    background-color: #0873FE;
+    color: white;
+    border: 1px  black;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
