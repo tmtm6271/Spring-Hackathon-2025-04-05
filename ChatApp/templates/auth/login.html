@@ -7,29 +7,38 @@ login
 <!--
 <img src="./image/profile_image.png" alt="プロフィール画像">
 --> 
+<!--
 <img src="../../static/img/auth.png" alt="サンプル画像">
+-->
 <!--
 <h1>Raretechハッカソン2025春</h1>
 <p>Hチームのチャットアプリです。</p>
 -->
+
 <div class="auth_wrapper">
-    <h2 class = "section-title">Langly</h2>
     <div class="login">
+        <h2 class = "section-title">Langly</h2>
         <form action="{{url_for('login_process')}}" method="POST">
-            <label for="mail_adress">メールアドレス</label>
-            <p>
-                <input class="input_box"
-                type="text"
-                name="email"
-                />
-            </p>
-            <label for="password">パスワード</label>
-            <p>
-                <input class="input_box"
-                type="password"
-                name="pass"
-                />
-            </p>
+            <div class="mail_input">
+                <label for="mail">メールアドレス</label>
+                <p>
+                    <input class="input_box"
+                    type="text"
+                    name="email"
+                    id="mail"
+                    />
+                </p>
+            </div>
+            <div class="pass_input">
+                <label for="pass">パスワード</label>
+                <p>
+                    <input class="input_box"
+                    type="password"
+                    name="pass"
+                    id="pass"
+                    />
+                </p>
+            </div>
             <div class="auth-button-container">
                 {% with messages = get_flashed_messages() %} {% if messages %}
                 <ul class="flashes">
@@ -38,8 +47,8 @@ login
                     {% endfor %}
                 </ul>
                 {% endif %} {% endwith %}
-                <p>
-                    <div class="login_submit">
+                <div class="button_wrapper">
+                    <div class="login_button">
                         <button 
                         type="submit" 
                         value="login"
@@ -47,9 +56,7 @@ login
                         ログイン
                         </button>
                     </div>
-                </p>
-                <p>
-                    <div class="sign_up">
+                    <div class="signup_button">
                         <button 
                         type="submit" 
                         value="signup"
@@ -57,7 +64,7 @@ login
                         新規登録
                         </button>
                     </div>
-                </p>
+                </div>
             </div>
         </form>
         
