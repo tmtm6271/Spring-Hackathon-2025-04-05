@@ -5,38 +5,52 @@ sign up
 
 {% block body %}
     
-    <div class="sign_up_wrapper">
+<div class="sign-up">
+    <img src="../../static/img/langly-logo.png">
+    <div class="sign-up-wrapper">
         <h2 class = "section-title">新規アカウントを作成</h2>
         <p>既に登録済みの場合は、<a href="login.html">こちら</a>でログインしてください</p>
         <form action="{{url_for ('signup_process')}}" method="POST">
-            <label for="user_name">会社名</label>
-            <p>
-                <input 
-                type="text"
-                name="company_name"
-                >
-            </p>
-            <label for="user_name">名前</label>
-            <p>
-                <input 
-                type="text"
-                name="user_name"
-                >
-            </p>
-            <label for="mail_adress">メールアドレス</label>
-            <p>
-                <input 
-                type="text"
-                name="email"
-                >
-            </p>
-            <label for="password">パスワード</label>
-            <p>
-                <input 
-                type="password"
-                name="pass"
-                >
-            </p>
+            <div class="company-input">
+                <label for="company">会社名</label>
+                <p>
+                    <input 
+                    type="text"
+                    name="company-name"
+                    id="company"
+                    >
+                </p>
+            </div>
+            <div class="user-input"></div>
+                <label for="user">名前</label>
+                <p>
+                    <input 
+                    type="text"
+                    name="user"
+                    id="user"
+                    >
+                </p>
+            </div>
+            <div class="mail-input"></div>
+                <label for="mail">メールアドレス</label>
+                <p>
+                    <input 
+                    type="text"
+                    name="email"
+                    id="mail"
+                    >
+                </p>
+            </div>
+            <div class="pass-input">
+                <label for="pass">パスワード</label>
+                <p>
+                    <input 
+                    type="password"
+                    name="pass"
+                    id="pass"
+                    >
+                </p>
+            </div>
             <div class ="auth-button-container">
                 {% with messages = get_flashed_messages() %} {% if messages %}
                 <ul class="flashes">
@@ -58,4 +72,5 @@ sign up
             </div>
         </form>
     </div>
+</div>
 {% endblock %}
