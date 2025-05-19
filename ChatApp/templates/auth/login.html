@@ -15,24 +15,27 @@ login
 <p>Hチームのチャットアプリです。</p>
 -->
 
-<div class="auth_wrapper">
-    <div class="login">
-        <h2 class = "section-title">Langly</h2>
+<div class="login">
+    <img src="../../static/img/langly-logo.png">
+    <!--
+    <h2 class = "section-title">Langly</h2>
+    -->
+    <div class="login-wrapper"></div>
         <form action="{{url_for('login_process')}}" method="POST">
-            <div class="mail_input">
+            <div class="mail-input">
                 <label for="mail">メールアドレス</label>
                 <p>
-                    <input class="input_box"
+                    <input class="input-box"
                     type="text"
                     name="email"
                     id="mail"
                     />
                 </p>
             </div>
-            <div class="pass_input">
+            <div class="pass-input">
                 <label for="pass">パスワード</label>
                 <p>
-                    <input class="input_box"
+                    <input class="input-box"
                     type="password"
                     name="pass"
                     id="pass"
@@ -47,8 +50,8 @@ login
                     {% endfor %}
                 </ul>
                 {% endif %} {% endwith %}
-                <div class="button_wrapper">
-                    <div class="login_button">
+                <div class="button-wrapper">
+                    <div class="login-button">
                         <button 
                         type="submit" 
                         value="login"
@@ -56,18 +59,23 @@ login
                         ログイン
                         </button>
                     </div>
-                    <div class="signup_button">
-                        <button 
-                        type="submit" 
-                        value="signup"
-                        name="action">
-                        新規登録
-                        </button>
-                    </div>
                 </div>
             </div>
         </form>
-        
+    <div class="sign-up-wrapper">
+        <form action="{{url_for('signup_page')}}" method="POST"></form>
+            <div class="button-wrapper">
+                <div class="signup-button">
+                    <button 
+                    type="submit" 
+                    value="signup"
+                    name="action">
+                    新規登録
+                    </button>
+                </div>
+            </div>
+        </form>
+
     </div>
 </div>
 {% endblock %}

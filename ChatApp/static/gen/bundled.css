@@ -7,22 +7,43 @@
     margin: 50px;
 }
 
+.sign-up{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+}
+
+img{
+    width: 225px;
+    height: 135px;
+}
 
 /*　ログイン,サインアップ画面共通 CSS */
 label{
     font-weight: bold;
+    color: #636363;
 }
 
 /* ログイン,サインアップの入力BOXのCSS */
-.mail_input{
-    margin-top: 10px;
+.mail-input{
+    margin-top: 20px;
 }
 
-.pass_input{
-    margin-top: 30px;
+.pass-input{
+    margin-top: 20px;
 }
 
-.input_box{
+.company-input{
+    margin-top: 20px;
+}
+
+.user-input{
+    margin-top: 20px;
+}
+
+.input-box{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -36,7 +57,7 @@ label{
     margin-top: 30px;
 }
 
-.button_wrapper{
+.button-wrapper{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -44,12 +65,12 @@ label{
 }
 
 button{
-    width: 250px;
-    height: 45px;
+    width: 225px;
+    height: 40.5px;
     margin-bottom: 20px;
-    background-color: #0873FE;
-    color: white;
-    border: 1px  black;
+    background-color: #a7f0e9;
+    color: #636363;
+    border: 1px solid black;
     border-radius: 50px;
     cursor: pointer;
     font-size: 20px;
