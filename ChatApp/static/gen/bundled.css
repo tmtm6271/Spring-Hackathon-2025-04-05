@@ -22,6 +22,21 @@ box-sizing: border-box;
     margin: 50px;
 }
 
+.room-create{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+}
+
+h2{
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: #636363;
+}
+
 img{
     width: 225px;
     height: 135px;
@@ -33,23 +48,42 @@ label{
     color: #636363;
 }
 
-/* ログイン,サインアップの入力BOXのCSS */
+/* 入力BOXのCSS */
+
+/* メールアドレス入力 */
 .mail-input{
     margin-top: 20px;
 }
 
+/* パスワード入力 */
 .pass-input{
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
+/* サインアップ会社名入力 */
 .company-input{
     margin-top: 20px;
 }
 
+/* サインアップユーザー名名入力 */
 .user-input{
     margin-top: 20px;
 }
 
+/* ルーム作成ルーム名入力 */
+.room-input{
+    margin-top: 20px;
+}
+
+/* ルーム作成招待するメンバー入力 */
+.room-members-input{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+/* ログイン、サインアップ、ルーム作成画面の入力BOX */
 .input-box{
     display: flex;
     flex-direction: column;
@@ -64,6 +98,7 @@ label{
     margin-top: 30px;
 }
 
+/* 全ボタン共通のCSS */
 .button-wrapper{
     display: flex;
     flex-direction: column;
@@ -71,6 +106,7 @@ label{
     align-items: center;
 }
 
+/* 全ボタン共通のCSS */
 button{
     width: 225px;
     height: 40.5px;
