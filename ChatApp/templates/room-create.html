@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>ルームの作成</title>
+        <!-- faviconの画像を作ったら/static/img/にfavicon.icoで保存してコメントアウトを解除する
+        <link rel="icon" href="../static/img/favicon.ico" />
+        -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='gen/bundled.css') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;900&family=M+PLUS+1:wght@200&display=swap" rel="stylesheet">
+
+    </head>
+<body>
+    <div class="room-create">
+        <h2>ルームの作成</h2>
+        <form action="url_for{{('room_create')}}" method="POST"></form>
+        <div class="room-input">
+            <label for="room_name">ルームの名前</label>
+            <p>
+                <input class="input-box"
+                type="text" 
+                name="room-name"
+                id="room_name"
+                >
+            </p>
+        </div>
+        <div class="room-members-input">
+            <label for="user_name">ルームにメンバーを招待</label>
+            <p>
+                <input class="input-box"
+                type="text"
+                name="user_name"
+                id="user_name">
+            </p>
+        </div>
+        <div class="button-wrapper">
+            <div class="room-create-button">
+                <button 
+                type="submit" 
+                value="room-create"
+                name="action">
+                作成
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
