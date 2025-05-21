@@ -1,9 +1,13 @@
-from flask import Flask, redirect, render_template, session, flash, abort, url_for
+from flask import Flask, redirect, render_template, session, flash, abort, url_for, request
 from datetime import timedelta
 import hashlib
 import uuid
 import re
 import os
+
+# DB操作（models）のファイルから、Userメソッドなどを取得
+# importで、DB情報を取ってくる
+from models import User #, Room, Message
 
 # FlaskやDjangoでは、デフォルトでtemplatesを認識するので、パス指定はtemplates以降を記載で問題ない
 # 定数定義
@@ -17,9 +21,10 @@ app.secret_key= os.getenv('SECRET_KEY', uuid.uuid4().hex) # .envファイルか�
 # 初回起動時のリダイレクト処理
 @app.route('/', methods=['GET'])
 def index():
-    uid = session.get('uid')
-    if uid is None:
+    user_id = session.get('user_id')
+    if user_id is None:
         return redirect(url_for('login_page'))  # ←セッションがない場合login_page関数からログイン画面に戻る
+    return redirect(url_for('room_page'))
 
 
 # ログイン画面表示
@@ -31,32 +36,64 @@ def login_page():
 # ログイン処理
 @app.route('/login', methods=['POST'])
 def login_process():
-    pass
+    # Formから入力内容の取得
+    email = request.form.get('email')
+    password = request.form.get('password')
+    if email == '' or password == '':
+        flash('未入力の項目があります')
+    else:
+        user = User.find_user(email) # find_userメソッドへ、emailを引数で渡し、SELECT文でユーザー情報を辞書型で全て取得
+        if user is None:
+            flash('ユーザーが存在しません')
+        else:
+            # ログイン画面で入力したpasswordをutf-8でバイト形式に変換
+            # hashlibで、バイト形式に変化かんされた入力データをハッシュ値に変換（sha256は256ビットのハッシュ値を生成する関数）
+            # hexdigestはハッシュ関数で生成されたハッシュ値を16進数に変換
+            # ユーザーが入力した内容をバイト形式に変換→ハッシュ値に変換→16進数に変換して変数に格納している
+            user_password = hashlib.sha256(password.encode('utf-8')).hexdigest
+
+            if user_password != user["pass"]:   # DBのカラム名をキーに値を取得
+                flash('パスワードが違います')
+            else:
+                session['user_id'] = user['user_id']
+                return redirect(url_for('room_page'))
+
+    return redirect(url_for('login_page'))
 
 
 # ログアウト処理
 @app.route('/login', methods=['POST'])
 def logout():
     session.clear()
-    return render_template(url_for('login_page'))
+    return redirect(url_for('index'))
 
 
 # サインアップ画面表示
 @app.route('/signup',methods=['GET'])
 def signup_page():
-    return render_template('auth/sign_up.html')
+    return render_template('auth/signup.html')
 
 
 # サインアップ処理
 @app.route('/signup',methods=['POST'])
 def signup_process():
-    pass
+    # htmlのname=の値を取得
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    # flash(***)：Flaskの機能の一つで、ユーザーへ一時的にメッセージを表示する
+    if name == '' or email == '' or password == '':
+        flash('空のフォームがあります')
+    else:
+        flash('OK')
+    return redirect(url_for('room_page'))
 
 
 # チャットルーム一覧表示
 @app.route('/room/<cid>/message', methods=['GET'])
 def room_page():
-    return render_template('auth/room.html')    # ★htmlファイル名の確認
+    return render_template('room.html')
 
 
 # チャットルーム作成処理
@@ -80,7 +117,7 @@ def room_delete():
 # チャットメッセージ画面表示
 @app.route('/room/<cid>/message', methods=['GET'])
 def message_page():
-    return render_template('auth/message.html')     # ★htmlファイル名の確認
+    return render_template('message.html')
 
 
 # メッセージ送信処理
