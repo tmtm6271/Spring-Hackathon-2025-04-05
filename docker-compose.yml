@@ -15,6 +15,8 @@ services:
     # ローカルの/data/dbをコンテナの/var/lib/mysqlにマウントする
     volumes:
       - mysql_data:/var/lib/mysql
+      #- ./Docker/MySQL/init.sql:/docker-entrypoint-initdb.d/init.sql
+    
     # コンテナ内の環境変数を設定
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
@@ -51,7 +53,7 @@ services:
       - ./ChatApp:/code
     # ローカルのFlaskポートとコンテナの5000番ポートをつなぐ
     ports:
-      - "${FLASK_PORT}:5000"
+     - "${FLASK_PORT}:5000"
     # コマンドを実行
     #  command: bash -c "python app.py"
     # 先にdbを起動してからappを起動する

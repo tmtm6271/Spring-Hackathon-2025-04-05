@@ -50,9 +50,9 @@ def login_process():
             # hashlibで、バイト形式に変化かんされた入力データをハッシュ値に変換（sha256は256ビットのハッシュ値を生成する関数）
             # hexdigestはハッシュ関数で生成されたハッシュ値を16進数に変換
             # ユーザーが入力した内容をバイト形式に変換→ハッシュ値に変換→16進数に変換して変数に格納している
-            user_password = hashlib.sha256(password.encode('utf-8')).hexdigest
+            #user_password = hashlib.sha256(password.encode('utf-8')).hexdigest
 
-            if user_password != user["pass"]:   # DBのカラム名をキーに値を取得
+            if password != user["pass"]:   # DBのカラム名をキーに値を取得
                 flash('パスワードが違います')
             else:
                 session['user_id'] = user['user_id']
