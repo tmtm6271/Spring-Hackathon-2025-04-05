@@ -38,7 +38,7 @@ def login_page():
 def login_process():
     # Formから入力内容の取得
     email = request.form.get('email')
-    password = request.form.get('password')
+    password = request.form.get('pass')
     if email == '' or password == '':
         flash('未入力の項目があります')
     else:
