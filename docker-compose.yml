@@ -15,7 +15,7 @@ services:
     # ローカルの/data/dbをコンテナの/var/lib/mysqlにマウントする
     volumes:
       - mysql_data:/var/lib/mysql
-      #- ./Docker/MySQL/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./Docker/MySQL/init.sql:/docker-entrypoint-initdb.d/init.sql
     
     # コンテナ内の環境変数を設定
     environment:
