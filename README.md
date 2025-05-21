@@ -7,8 +7,18 @@ docker compose up
 
 **ブラウザで確認**
 ```
-http://localhost:55000
+http://localhost:55001
 ```
+
+**サンプルアプリの該当箇所を変更**
+・.env
+　→10行目：FLASK_PORT=56000
+
+・docker-compose.yml
+　→5行目：container_name: MySQL_sample
+　→42行目：container_name: Flask_sample
+　→54行目：- "${FLASK_PORT}:5600"
+
 
 **ディレクトリ構成図**
 <pre>
