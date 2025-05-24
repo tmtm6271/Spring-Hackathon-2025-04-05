@@ -4,9 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>{% block title %}{% endblock %}</title>
-        <!-- faviconの画像を作ったら/static/img/にfavicon.icoで保存してコメントアウトを解除する
+        <!-- faviconの画像を作ったら/static/img/にfavicon.icoで保存してコメントアウトを解除する -->
         <link rel="icon" href="../static/img/favicon.ico" />
-        -->
         <link rel="stylesheet" href="{{ url_for('static', filename='gen/bundled.css') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,6 +13,6 @@
 
     </head>
     <body>
-    {% block body %}{% endblock %}{% include 'util/sidebar.html'%} 
+    {% block body %}{% endblock %}{% include 'util/sidebar.html'%} {% include 'util/mobile-header.html'%}
     </body>
 </html>
