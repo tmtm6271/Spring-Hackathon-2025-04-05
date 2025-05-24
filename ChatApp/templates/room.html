@@ -10,25 +10,46 @@ room
  <div class="left-container">
   <div id="rooms-list">
     <ul class="channel-box">
-    <!-- 
-      {% for room in rooms %}
-      <li>{{ room.name }}</li>
-      {% endfor %}
-    -->
-    <li class = "roon-item">room1</li>
-    <li class = "roon-item">room2</li>
-    <li class = "roon-item">room3</li>
-    <li class = "roon-item">room4</li>
-    <li class = "roon-item">room5</li>
+
+    <li class = "room-item-wrapper">
+      <div class = "room-item">room1</div>
+      <img class ="room-delete-button" src="../static/img/trash.png" alt ="">
+    </li>
+
+    <li class = "room-item-wrapper">
+      <div class = "room-item">room2</div>
+      <img class ="room-delete-button" src="../static/img/trash.png" alt ="">
+    </li>
+
+    <li class = "room-item-wrapper">
+      <div class = "room-item">room3</div>
+      <img class ="room-delete-button" src="../static/img/trash.png" alt ="">
+    </li>
+  
+    <li class = "room-item-wrapper">
+      <div class = "room-item">room4</div>
+      <img class ="room-delete-button" src="../static/img/trash.png" alt ="">
+    </li>
+
+    <li class="room-item-wrapper">
+      <a href="{{ url_for('room_create')}}"><img class="room-create-button" src="../static/img/create_room.png" alt ="">
+      </a>
+    </li>
+
     </ul>
   </div>
  </div>
- <div class="right-container">
-    <div class="channel-title">
+ <div class = "right-container">
+    <div class = "channel-title">
       <h1>Home</h1>
     </div>
     <div id="messages-list">
      <ul class="message-box">
+          <!-- 
+      {% for massage in massages %}
+      <li>{{ massage.name }}</li>
+      {% endfor %}
+    -->
      <li class = "message-item">ここにidが一番新しいメッセージが表示される。未読は太字。</li>
      <li class = "message-item">ここにidが一番新しいメッセージが表示される。未読は太字。</li>
      <li class = "message-item">ここにidが一番新しいメッセージが表示される。未読は太字。</li>

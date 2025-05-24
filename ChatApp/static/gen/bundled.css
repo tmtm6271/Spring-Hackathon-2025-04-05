@@ -33,7 +33,6 @@ box-sizing: border-box;
     bottom: 10px;
 }
 
-
 /* ログイン画面全体のCSS */
 .login{
     display: flex;
@@ -178,8 +177,6 @@ button{
     height: 100vh;
 }
 
-
-
 .left-container{
 
     width:500px;
@@ -198,7 +195,13 @@ button{
     box-sizing: border-box;
 }
 
-.roon-item{
+.room-item-wrapper{
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.room-item{
     width: 80%;
     border: 1px solid #000000;
     border-radius: 8px;
@@ -208,6 +211,20 @@ button{
     list-style: none;
     box-sizing: border-box;
     text-align: left;
+}
+
+.room-delete-button{
+    width: 26px;
+    height: 31px;
+    margin: 0 0 15px 13px;
+    cursor: pointer;
+}
+
+.room-create-button{
+    width: 30px;
+    height: 32px;
+    cursor: pointer;
+
 }
 
 .message-item{
