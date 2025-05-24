@@ -106,9 +106,9 @@ def signup_process():
     return redirect(url_for('signup_page'))
 
 
-'''# チャットルーム一覧表示
+'''# ログイン後の初回ページ
 @app.route('/room', methods=['GET'])
-def room_page():
+def home_page():
     user_id = session.get('user_id')
     if user_id is None:
         return redirect(url_for('login_page'))
@@ -119,9 +119,9 @@ def room_page():
         return render_template('room.html', my_rooms, messages)
 '''
 
-#★一時的の画面遷移
+#★ログイン後の初回ページ
 @app.route('/room', methods=['GET'])
-def room_page():
+def home_page():
     return render_template('room.html')
 
 
@@ -144,9 +144,9 @@ def room_delete():
     pass
 
 
-# チャットメッセージ画面表示
+# ルーム間の遷移
 @app.route('/room/<cid>/message', methods=['GET'])
-def message_page():
+def room_page():
     return render_template('message.html')
 
 
