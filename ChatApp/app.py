@@ -107,7 +107,7 @@ def signup_process():
 
 
 '''# ログイン後の初回ページ
-@app.route('/room', methods=['GET'])
+@app.route('/room/message', methods=['GET'])
 def home_page():
     user_id = session.get('user_id')
     if user_id is None:
@@ -120,7 +120,7 @@ def home_page():
 '''
 
 #★ログイン後の初回ページ
-@app.route('/room', methods=['GET'])
+@app.route('/room/message', methods=['GET'])
 def home_page():
     return render_template('room.html')
 
