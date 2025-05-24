@@ -56,7 +56,7 @@ def login_process():
                 flash('パスワードが間違っています')
             else:
                 session['user_id'] = user['user_id']
-                return redirect(url_for('room_page'))
+                return redirect(url_for('home_page'))
 
     return redirect(url_for('login_page'))
 
@@ -102,7 +102,7 @@ def signup_process():
             flash('既に登録されたメールアドレスです')
         else:
             User.create_user(user_id,company_id,name,email,password)
-            return redirect(url_for('room_page'))
+            return redirect(url_for('home_page'))
     return redirect(url_for('signup_page'))
 
 
