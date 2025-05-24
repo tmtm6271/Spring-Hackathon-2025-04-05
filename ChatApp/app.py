@@ -7,7 +7,7 @@ import os
 
 # DB操作（models）のファイルから、Userメソッドなどを取得
 # importで、DB情報を取ってくる
-from models import User #, Room, Message
+from models import User, Room, Message, File
 
 # FlaskやDjangoでは、デフォルトでtemplatesを認識するので、パス指定はtemplates以降を記載で問題ない
 # 定数定義
@@ -99,7 +99,6 @@ def signup_process():
 
         # 作成されたアカウントが存在するか確認
         if registered_user != None:
-            flash (registered_user)
             flash('既に登録されたメールアドレスです')
         else:
             User.create_user(user_id,company_id,name,email,password)
@@ -107,19 +106,30 @@ def signup_process():
     return redirect(url_for('signup_page'))
 
 
-# チャットルーム一覧表示
-#@app.route('/room/<cid>/message', methods=['GET'])
-#def room_page(cid):
-@app.route('/room/message', methods=['GET'])
+'''# チャットルーム一覧表示
+@app.route('/room', methods=['GET'])
 def room_page():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))
+    else:
+        my_rooms = Room.get_all(user_id)
+        messages = Message.get_all()
+        # room情報と
+        return render_template('room.html', my_rooms, messages)
+'''
 
+#★一時的の画面遷移
+@app.route('/room', methods=['GET'])
+def room_page():
     return render_template('room.html')
+
 
 
 # チャットルーム作成処理
 @app.route('/room/create', methods=['POST'])
 def room_create():
-    pass
+    return render_template('room_create.html')
 
 
 # チャットルーム編集処理
