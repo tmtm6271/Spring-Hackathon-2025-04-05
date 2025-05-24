@@ -8,6 +8,7 @@ box-sizing: border-box;
 #mobile-header{
     width: 100%;
     height: 60px;
+    background-color: #f4f6fc;
 }
 
 #mobile-header > img{
@@ -16,8 +17,33 @@ box-sizing: border-box;
     margin-left: 10px;
 }
 
+#sidebar{
+    position: fixed;
+    width: 50px;
+    height: 100%;
+    background: #f4f6fc;
+
+}
+
+.sidebar-icon{
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    bottom: 10px;
+}
+
+
 /* ログイン画面全体のCSS */
 .login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+}
+
+.sign-up{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,7 +56,7 @@ box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 50px;
+    margin-top: 0px;
 }
 
 h2{
@@ -97,6 +123,17 @@ label{
     background-color: #e5e5e5;
 }
 
+.room-input-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 40px;
+    width: 500PX;
+    border: 1px solid black;
+    background-color: #e5e5e5;
+}
+
+
 .auth-button-container{
     margin-top: 30px;
 }
@@ -123,40 +160,32 @@ button{
     font-weight: bold;
 }
 
+.room-create-button > button{
+    width: 150px;
+    height: 40.5px;
+    margin-bottom: 20px;
+    background-color: #a7f0e9;
+    color: #636363;
+    border: 1px solid black;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 /* roomのCSS */
 .room-wrapper{
     display: flex;
     height: 100vh;
 }
 
-.header-icon > img{
-    width: 100px;
-    height: 50px;
-    margin-left: 10px;
-}
 
-.header-icon{
-    display: flex;
-    justify-content: space-between;
-    height: 50px;
-    background-color: #d9d9d9;
-}
-
-.sidebar{
-    width: 150px;
-    background: #a7f0e9;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 24px 0;
-    box-sizing: border-box;
-}
 
 .left-container{
-    width:700px;
+
+    width:500px;
     background: #fff;
     border-right: 2px solid #D9D9D9;
+    margin-left: 60px;
     margin-right: 24px;
     box-sizing: border-box;
     padding: 24px 0;
@@ -169,7 +198,7 @@ button{
     box-sizing: border-box;
 }
 
-.room-item{
+.roon-item{
     width: 80%;
     border: 1px solid #000000;
     border-radius: 8px;
