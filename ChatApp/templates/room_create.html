@@ -9,34 +9,38 @@ room
 
 <div class="room-create">
     <h2>ルームの作成</h2>
-    <form action="url_for{{('room_create')}}" method="POST"></form>
-    <div class="room-input">
-        <label for="room_name">ルームの名前</label>
-        <p>
-            <input class="room-input-box"
-            type="text" 
-            name="room-name"
-            id="room_name"
-            >
-        </p>
-    </div>
-    <div class="room-members-input">
-        <label for="user_name">ルームにメンバーを招待</label>
-        <p>
-            <input class="room-input-box"
-            type="text"
-            name="user_name"
-            id="user_name">
-        </p>
-    </div>
-    <div class="button-wrapper">
-        <div class="room-create-button">
-            <button 
-            type="submit" 
-            value="room-create"
-            name="action">
-            作成
-            </button>
+    <form action="url_for{{('room_create')}}" method="POST">
+        <div class="room-input">
+            <label for="room_name">ルームの名前</label>
+            <p>
+                <input class="room-input-box"
+                type="text" 
+                name="room-name"
+                id="room_name"
+                placeholder="作成したいルームの名前を入力してください"
+                >
+            </p>
         </div>
-    </div>
+        <div class="room-members-input">
+            <label for="user_email">ルームにメンバーを招待</label>
+            <p>
+                <input class="room-input-box"
+                type="email"
+                name="user_email"
+                id="user_email"
+                placeholder="招待したいユーザーのメールアドレスを入力してください">
+            </p>
+        </div>
+        <div class="button-wrapper">
+            <div class="room-create-button">
+                <button 
+                type="submit" 
+                value="room-create"
+                name="action">
+                作成
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
+{% endblock %}
