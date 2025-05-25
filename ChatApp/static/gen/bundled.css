@@ -27,8 +27,8 @@ box-sizing: border-box;
 
 .sidebar-icon{
     position: fixed;
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     margin-left: 10px;
     bottom: 10px;
 }
@@ -163,6 +163,7 @@ button{
     width: 150px;
     height: 40.5px;
     margin-bottom: 20px;
+    align-items: center;
     background-color: #a7f0e9;
     color: #636363;
     border: 1px solid black;
@@ -213,14 +214,14 @@ button{
     text-align: left;
 }
 
-.room-delete-button{
+.room-delete-icon{
     width: 26px;
     height: 31px;
     margin: 0 0 15px 13px;
     cursor: pointer;
 }
 
-.room-create-button{
+.room-create-icon{
     width: 30px;
     height: 32px;
     cursor: pointer;
