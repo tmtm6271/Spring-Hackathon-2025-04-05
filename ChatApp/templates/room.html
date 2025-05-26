@@ -9,54 +9,72 @@ room
  <div class="sidebar"> </div>
  <div class="left-container">
   <div id="rooms-list">
-    <ul class="channel-box">
-
+    <ul class="room-box">
+    <!-- 
+    {% for room in rooms %}
+    <li>{{ room.name }}</li>
+    {% endfor %}
+    -->
+  
     <li class = "room-item-wrapper">
       <div class = "room-item">room1</div>
-      <img class ="room-delete-button" src="../static/img/trash.png" alt ="">
+      <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
     </li>
 
     <li class = "room-item-wrapper">
       <div class = "room-item">room2</div>
-      <img class ="room-delete-button" src="../static/img/trash.png" alt ="">
+      <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
     </li>
 
     <li class = "room-item-wrapper">
       <div class = "room-item">room3</div>
-      <img class ="room-delete-button" src="../static/img/trash.png" alt ="">
+      <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
     </li>
   
     <li class = "room-item-wrapper">
       <div class = "room-item">room4</div>
-      <img class ="room-delete-button" src="../static/img/trash.png" alt ="">
+      <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
     </li>
 
     <li class="room-item-wrapper">
-      <a href="{{ url_for('room_create')}}"><img class="room-create-button" src="../static/img/create_room.png" alt ="">
-      </a>
-    </li>
-
+      <form action="{{ url_for('room_create') }}" method="POST">
+        <input type="image" src="../static/img/create_room.png" alt="" class="room-create-icon">
+      </form>
+      
     </ul>
   </div>
  </div>
- <div class = "right-container">
-    <div class = "channel-title">
-      <h1>Home</h1>
+ <div class="right-container">
+    <div class="room-title-wrapper">
+      <h1 id="room-title">room1</h1>
     </div>
-    <div id="messages-list">
-     <ul class="message-box">
-          <!-- 
-      {% for massage in massages %}
-      <li>{{ massage.name }}</li>
-      {% endfor %}
-    -->
-     <li class = "message-item">ここにidが一番新しいメッセージが表示される。未読は太字。</li>
-     <li class = "message-item">ここにidが一番新しいメッセージが表示される。未読は太字。</li>
-     <li class = "message-item">ここにidが一番新しいメッセージが表示される。未読は太字。</li>
-     <li class = "message-item">ここにidが一番新しいメッセージが表示される。未読は太字。</li>
-     <li class = "message-item">ここにidが一番新しいメッセージが表示される。未読は太字。</li>
-     </ul>
+    <div class="room-switch-wrapper">
+      <form action="{{ url_for('room_create') }}" method="POST">
+        <input type="image" src="../static/img/note-icon.png" alt="" class="note-icon">
+      </form>
+      <form action="{{ url_for('room_create') }}" method="POST">
+       <input type="image" src="../static/img/chat-icon.png" alt="" class="chat-icon">
+      </form>
+      </div>
+    <div class="messages-wrapper">
+        <div class="typing-box-wrapper">
+          <form action="{{url_for('room_create')}}" method="POST">
+            <div class="message-input">
+              <input class="message-input-box"
+              type="message"
+              name="message"
+              id="message"
+              />
+            </div>
+          </form>
+            <form action="{{ url_for('room_create') }}" method="POST">
+              <input type="image" src="../static/img/clip.png" alt="" class="clip-icon">
+            </form>
+            <form action="{{ url_for('room_create') }}" method="POST">
+              <input type="image" src="../static/img/send.png" alt="" class="send-icon">
+            </form>
+        </div>
     </div>
-   </div>
+  </div>
  </div>
 {% endblock %}
