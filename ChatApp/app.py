@@ -106,30 +106,44 @@ def signup_process():
     return redirect(url_for('signup_page'))
 
 
-'''# ログイン後の初回ページ
+# ログイン後の初回ページ
 @app.route('/room/message', methods=['GET'])
 def home_page():
-    user_id = session.get('user_id')
+    '''user_id = session.get('user_id')
     if user_id is None:
         return redirect(url_for('login_page'))
     else:
-        my_rooms = Room.get_all(user_id)
-        messages = Message.get_all()
-        # room情報と
-        return render_template('room.html', my_rooms, messages)
+        my_rooms = Room.get_all(user_id)    # ルーム一覧情報を昇順で取得
+        print(f'自分のルーム：{my_rooms}')
+        #messages = Message.get_all(my_rooms['room_id'])
+        # room一覧とmessages一覧を辞書型で取得（キー値はDBのカラム名を利用）
+        return render_template('room.html', my_rooms)#, messages)
 '''
-
-#★ログイン後の初回ページ
-@app.route('/room/message', methods=['GET'])
-def home_page():
     return render_template('room.html')
-
+# チャットルーム作成画面表示
+# 一時的に画面遷移のため<cid>なし
+# @app.route('/room/create/<cid>', methods=['GET'])
+@app.route('/room/create', methods=['GET'])
+def room_create_page():
+    return render_template('room_create.html')
 
 
 # チャットルーム作成処理
+# 一時的に処理のため<cid>なし
+# @app.route('/room/create<cid>', methods=['POST'])
 @app.route('/room/create', methods=['POST'])
 def room_create():
-    return render_template('room_create.html')
+    
+    # 作成後は、作成したルームへ移動
+    return render_template('message.html')
+
+
+# チャットルーム編集処理
+# 一時的に処理のため<cid>なし
+@app.route('/room/update/<cid>', methods=['GET'])
+def room_update_page():
+    return render_template('')
+
 
 
 # チャットルーム編集処理
