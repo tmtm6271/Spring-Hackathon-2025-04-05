@@ -129,7 +129,7 @@ def home_page():
         print(f'ルーム_id：{room_id}')
         print(f'member_id：{member_id}')
         if member_id:
-            messages = Message.get_all(member_id[0])
+            messages = Message.get_all(room_id[0])
             print(f'message：{messages}')
         # html側でlist型で扱えるよう、room名一覧をmy_rooms、message一覧をmessagesの変数で利用できるようにレンダリング
         return render_template('room.html', room_name=room_name, messages=messages)

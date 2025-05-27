@@ -240,7 +240,7 @@ class Message:
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO messages(user_id, room_id, original_message) VALUES(%s, %s, %s)"
+                sql = "INSERT INTO messages(room_member_id, room_id, original_message) VALUES(%s, %s, %s)"
                 cur.execute(sql, (user_id, room_id, original_message,))
                 conn.commit()
         except pymysql.Error as e:
