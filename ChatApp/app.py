@@ -109,17 +109,31 @@ def signup_process():
 # ログイン後の初回ページ
 @app.route('/room/message', methods=['GET'])
 def home_page():
-    '''user_id = session.get('user_id')
+    user_id = session.get('user_id')
+    room_name = []
+    room_id = []
+    member_id = []
     if user_id is None:
         return redirect(url_for('login_page'))
     else:
-        my_rooms = Room.get_all(user_id)    # ルーム一覧情報を昇順で取得
-        print(f'自分のルーム：{my_rooms}')
-        #messages = Message.get_all(my_rooms['room_id'])
-        # room一覧とmessages一覧を辞書型で取得（キー値はDBのカラム名を利用）
-        return render_template('room.html', my_rooms)#, messages)
-'''
-    return render_template('room.html')
+        my_list = Room.get_all(user_id)   # room_id,room_name,owner_id一覧情報を昇順で取得
+        
+        # ルーム名、ルームid、メンバーidをそれぞれ取得
+        for itm in my_list:
+            room_name .append(itm['room_name'])
+            room_id .append(itm['room_id'])
+            member_id.append(itm['room_member_id'])
+
+        print(f'取得情報：{my_list}')
+        print(f'ルーム名：{room_name}')
+        print(f'ルーム_id：{room_id}')
+        print(f'member_id：{member_id}')
+        if member_id:
+            messages = Message.get_all(member_id[0])
+            print(f'message：{messages}')
+        # html側でlist型で扱えるよう、room名一覧をmy_rooms、message一覧をmessagesの変数で利用できるようにレンダリング
+        return render_template('room.html', room_name=room_name, messages=messages)
+
 # チャットルーム作成画面表示
 # 一時的に画面遷移のため<cid>なし
 # @app.route('/room/create/<cid>', methods=['GET'])

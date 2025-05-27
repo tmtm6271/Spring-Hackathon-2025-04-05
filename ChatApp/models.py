@@ -14,7 +14,6 @@ class User:
     def find_user(cls,email):
         # データベース接続プールからコネクションを取得する（DB.pyファイルのこと）
         conn = db_pool.get_conn()
-        print(email)
         try:
             with conn.cursor() as cur:
                 sql = "SELECT * FROM users WHERE email=%s;"
@@ -131,7 +130,14 @@ class Room:
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "SELECT * FROM room_members WHERE user_id=%s ORDER BY last_accessed_at;"
+                sql = "SELECT * FROM room_members WHERE user_id=%s"
+                sql = """
+                    SELECT rm.*,r.*
+                    FROM room_members AS rm
+                    INNER JOIN rooms AS r ON rm.room_id = r.room_id
+                    WHERE rm.user_id=%s 
+                    ORDER BY last_accessed_at DESC;
+                   """
                 cur.execute(sql,(user_id))
                 rooms = cur.fetchall()
                 return rooms
