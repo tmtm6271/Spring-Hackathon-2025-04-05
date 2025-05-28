@@ -132,10 +132,6 @@ def home_page():
             member_id.append(itm['room_member_id'])
 
         # 本番では削除
-        print(f'取得情報：{my_list}')
-        print(f'ルーム名：{room_name}')
-        print(f'ルーム_id：{room_id}')
-        print(f'member_id：{member_id}')
         if member_id:
             messages = Message.get_all(room_id[0])
             print(f'message：{messages}')
@@ -205,7 +201,7 @@ def room_delete():
 
 
 # ルーム間の遷移(サンプルアプリのメッセージの詳細画面表示に該当)
-@app.route('/room/<cid>/message', methods=['GET'])
+@app.route('/room/<cid>/message', methods=['POST'])
 def room_page(cid):
     user_id = session.get('user_id')
     if user_id is None:
@@ -213,10 +209,9 @@ def room_page(cid):
     room_id = Room.get_all(user_id)
     
 
-
+    #ループ処理
+    
     return render_template('message.html')
-
-
 
 
 #------------------------------メッセージ関連--------------------------------------
