@@ -15,9 +15,10 @@ room
     <li>{{ room.name }}</li>
     {% endfor %}
     -->
-    {% for room in room_name %}
+    {% for r_name,r_id in room_name,room_id %}
     <li class = "room-item-wrapper">
-      <div class = "room-item">{{ room }}</div>
+      <div class = "room-item">{{ r_name }}</div>
+      <input type="hidden" name="room_id" value="{{ r_id }}">
       <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
     </li>
     {% endfor %}
