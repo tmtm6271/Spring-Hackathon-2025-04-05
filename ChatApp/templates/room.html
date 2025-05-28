@@ -15,29 +15,14 @@ room
     <li>{{ room.name }}</li>
     {% endfor %}
     -->
-  
+    {% for room in room_name %}
     <li class = "room-item-wrapper">
-      <div class = "room-item">room1</div>
+      <div class = "room-item">{{ room }}</div>
       <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
     </li>
-
-    <li class = "room-item-wrapper">
-      <div class = "room-item">room2</div>
-      <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
-    </li>
-
-    <li class = "room-item-wrapper">
-      <div class = "room-item">room3</div>
-      <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
-    </li>
-  
-    <li class = "room-item-wrapper">
-      <div class = "room-item">room4</div>
-      <img class ="room-delete-icon" src="../static/img/trash.png" alt ="">
-    </li>
-
+    {% endfor %}
     <li class="room-item-wrapper">
-      <form action="{{ url_for('room_create') }}" method="POST">
+      <form action="{{ url_for('room_create_page') }}" method="GET">
         <input type="image" src="../static/img/create_room.png" alt="" class="room-create-icon">
       </form>
       

@@ -9,7 +9,7 @@ room
 
 <div class="room-create">
     <h2>ルームの作成</h2>
-    <form action="url_for{{('room_create')}}" method="POST">
+    <form action="{{ url_for('room_create')}}" method="POST">
         <div class="room-input">
             <label for="room_name">ルームの名前</label>
             <p>
