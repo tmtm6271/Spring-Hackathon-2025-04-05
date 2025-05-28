@@ -76,14 +76,16 @@ class User:
 class Room:
     # ルーム作成メソッド
     @classmethod
-    def create(cls, user_id, room_id, new_room_name):
+    def create(cls, user_id, new_room_name):
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO rooms (room_id, room_name) VALUES (%s, %s);"
-                cur.execute(sql, (room_id, new_room_name,))
-                sql = "INSERT INTO room_members (user_id, room_id, privilege) VALUES (%s, %s, %s)"
-                cur.execute(sql, (user_id, room_id, "admin",))
+                sql = "INSERT INTO rooms (owner_id,room_name) VALUES (%s,%s);"
+                cur.execute(sql, (user_id, new_room_name,))
+                room_id = cur.lastrowid
+                print(f'ルームid：{room_id}')
+                sql = "INSERT INTO room_members (user_id, room_id, privilege) VALUES (%s, %s, %s);"
+                cur.execute(sql, (user_id,room_id, "admin",))
                 conn.commit()
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
@@ -98,7 +100,7 @@ class Room:
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO room_members (user_id, room_id, privilege) VALUES (%s, %s, %s)"
+                sql = "INSERT INTO room_members (user_id, room_id, privilege) VALUES (%s, %s, %s);"
                 cur.execute(sql, (member_id, room_id, "member",))
                 conn.commit()
         except pymysql.Error as e:
@@ -130,7 +132,6 @@ class Room:
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "SELECT * FROM room_members WHERE user_id=%s"
                 sql = """
                     SELECT rm.*,r.*
                     FROM room_members AS rm
@@ -140,6 +141,7 @@ class Room:
                    """
                 cur.execute(sql,(user_id))
                 rooms = cur.fetchall()
+                print(rooms)
                 return rooms
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
@@ -165,7 +167,7 @@ class Room:
             db_pool.release(conn)
 
 
-    # 
+    # ルームID検索
     @classmethod
     def find_by_id(cls, room_id):
         conn = db_pool.get_conn()
@@ -174,6 +176,7 @@ class Room:
                 sql = "SELECT * FROM rooms WHERE room_id=%s;"
                 cur.execute(sql, (room_id,))
                 room = cur.fetchone()
+                print(f'ルーム検索：{room}')
                 return room
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
@@ -182,7 +185,7 @@ class Room:
             db_pool.release(conn)
 
 
-    # 
+    # ルーム名検索
     @classmethod
     def find_by_name(cls, room_name):
         conn = db_pool.get_conn()
@@ -236,12 +239,12 @@ class Room:
 class Message:
     # メッセージ作成
     @classmethod
-    def create(cls,user_id, room_id, original_message):
+    def create(cls,user_id, original_message):
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO messages(room_member_id, room_id, original_message) VALUES(%s, %s, %s)"
-                cur.execute(sql, (user_id, room_id, original_message,))
+                sql = "INSERT INTO messages(room_member_id, original_message) VALUES(%s, %s, %s);"
+                cur.execute(sql, (user_id, original_message,))
                 conn.commit()
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
@@ -262,7 +265,7 @@ class Message:
                    INNER JOIN room_members AS r ON m.room_member_id = r.room_member_id 
                    INNER JOIN users AS u ON u.user_id = r.user_id 
                    WHERE r.room_id = %s 
-                   ORDER BY message_id ASC;
+                   ORDER BY message_id DESC;
                """
                 cur.execute(sql, (room_id,))
                 messages = cur.fetchall()
@@ -314,7 +317,7 @@ class File:
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO files(message_id, display_name, file_path) VALUES(%s, %s, %s)"
+                sql = "INSERT INTO files(message_id, display_name, file_path) VALUES(%s, %s, %s);"
                 cur.execute(sql, (message_id, display_name, file_path,))
                 conn.commit()
         except pymysql.Error as e:
@@ -371,4 +374,3 @@ class File:
             abort(500)
         finally:
             db_pool.release(conn)
-

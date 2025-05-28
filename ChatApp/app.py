@@ -16,6 +16,7 @@ SESSION_DAYS = 30
 
 app = Flask(__name__)
 app.secret_key= os.getenv('SECRET_KEY', uuid.uuid4().hex) # .envファイルからシークレットキーを取得
+app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 
 # 起動時にセッションがあれば、channel.htmlへ遷移し、なければlogin.htmlへ遷移する
 # 初回起動時のリダイレクト処理
@@ -71,6 +72,9 @@ def logout():
 # サインアップ画面表示
 @app.route('/signup',methods=['GET'])
 def signup_page():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))  # ←セッションがない場合login_page関数からログイン画面に戻る
     return render_template('auth/signup.html')
 
 
@@ -106,6 +110,8 @@ def signup_process():
     return redirect(url_for('signup_page'))
 
 
+
+#------------------------------チャットルーム関連--------------------------------------
 # ログイン後の初回ページ
 @app.route('/room/message', methods=['GET'])
 def home_page():
@@ -113,10 +119,11 @@ def home_page():
     room_name = []
     room_id = []
     member_id = []
+    messages = []
     if user_id is None:
         return redirect(url_for('login_page'))
     else:
-        my_list = Room.get_all(user_id)   # room_id,room_name,owner_id一覧情報を昇順で取得
+        my_list = Room.get_all(user_id)   # room_id,room_name,owner_id一覧情報を降順で取得
         
         # ルーム名、ルームid、メンバーidをそれぞれ取得
         for itm in my_list:
@@ -124,6 +131,7 @@ def home_page():
             room_id .append(itm['room_id'])
             member_id.append(itm['room_member_id'])
 
+        # 本番では削除
         print(f'取得情報：{my_list}')
         print(f'ルーム名：{room_name}')
         print(f'ルーム_id：{room_id}')
@@ -131,32 +139,55 @@ def home_page():
         if member_id:
             messages = Message.get_all(room_id[0])
             print(f'message：{messages}')
-        # html側でlist型で扱えるよう、room名一覧をmy_rooms、message一覧をmessagesの変数で利用できるようにレンダリング
-        return render_template('room.html', room_name=room_name, messages=messages)
+        # フロント側でlist型で扱えるよう、room名一覧をmy_rooms、message一覧をmessagesの変数で利用できるようにレンダリング
+        return render_template('room.html',room_id=room_id, room_name=room_name, messages=messages)
+    
 
 # チャットルーム作成画面表示
-# 一時的に画面遷移のため<cid>なし
-# @app.route('/room/create/<cid>', methods=['GET'])
+#                                   ↓GET or POSTメソッドの確認
 @app.route('/room/create', methods=['GET'])
 def room_create_page():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))  # ←セッションがない場合login_page関数からログイン画面に戻る
+    
     return render_template('room_create.html')
 
 
 # チャットルーム作成処理
-# 一時的に処理のため<cid>なし
-# @app.route('/room/create<cid>', methods=['POST'])
 @app.route('/room/create', methods=['POST'])
 def room_create():
-    
-    # 作成後は、作成したルームへ移動
-    return render_template('message.html')
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))  # ←セッションがない場合login_page関数からログイン画面に戻る
 
+    new_room_name = request.form.get('room-name')
+
+    print(f'新規ルーム名：{new_room_name}')
+    if new_room_name == '':
+        print('ルーム名を入力してください')
+        flash('ルーム名を入力してください')
+    else: 
+        room_name = Room.find_by_name(new_room_name)
+
+        if room_name != None:
+            print(f'{room_name}は既に存在します')
+            flash(f'{room_name}は既に存在します')
+        else:
+            print(f'新ルーム：{new_room_name}は作成されました')
+            room_id = Room.create(user_id,new_room_name)
+            # 作成後は、作成したルームへ移動
+            print(f'room_id：{room_id}')
+            return redirect(url_for('home_page',room_id=room_id))
+
+    return redirect(url_for('room_create_page'))
+    
 
 # チャットルーム編集処理
 # 一時的に処理のため<cid>なし
 @app.route('/room/update/<cid>', methods=['GET'])
 def room_update_page():
-    return render_template('')
+    return render_template('room_page')
 
 
 
@@ -172,12 +203,23 @@ def room_delete():
     pass
 
 
-# ルーム間の遷移
+
+# ルーム間の遷移(サンプルアプリのメッセージの詳細画面表示に該当)
 @app.route('/room/<cid>/message', methods=['GET'])
-def room_page():
+def room_page(cid):
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page')) 
+    room_id = Room.get_all(user_id)
+    
+
+
     return render_template('message.html')
 
 
+
+
+#------------------------------メッセージ関連--------------------------------------
 # メッセージ送信処理
 @app.route('/room/<cid>/message', methods=['POST'])
 def message_create():
@@ -205,7 +247,3 @@ def message_translation():
 # mainメソッド
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
-
-
-
-
