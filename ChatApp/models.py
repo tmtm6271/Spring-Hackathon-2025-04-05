@@ -83,7 +83,6 @@ class Room:
                 sql = "INSERT INTO rooms (owner_id,room_name) VALUES (%s,%s);"
                 cur.execute(sql, (user_id, new_room_name,))
                 room_id = cur.lastrowid
-                print(f'ルームid：{room_id}')
                 sql = "INSERT INTO room_members (user_id, room_id, privilege) VALUES (%s, %s, %s);"
                 cur.execute(sql, (user_id,room_id, "admin"))
                 conn.commit()
@@ -166,7 +165,7 @@ class Room:
             db_pool.release(conn)
 
 
-    # ルームID検索
+    # ルームIDで検索
     @classmethod
     def find_by_id(cls, room_id):
         conn = db_pool.get_conn()
@@ -184,7 +183,7 @@ class Room:
             db_pool.release(conn)
 
 
-    # ルーム名検索
+    # ルーム名で検索
     @classmethod
     def find_by_name(cls, room_name):
         conn = db_pool.get_conn()
