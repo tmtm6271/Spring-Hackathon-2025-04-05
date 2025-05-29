@@ -17,6 +17,8 @@ SESSION_DAYS = 30
 app = Flask(__name__)
 app.secret_key= os.getenv('SECRET_KEY', uuid.uuid4().hex) # .envファイルからシークレットキーを取得
 app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
+# ここにzip関数をJinja2のグローバル変数として追加
+app.jinja_env.globals.update(zip=zip)
 
 # 起動時にセッションがあれば、channel.htmlへ遷移し、なければlogin.htmlへ遷移する
 # 初回起動時のリダイレクト処理
@@ -122,7 +124,6 @@ def home_page():
     user_name = []
     message_list = []
     message_id = []
-    translated_message_list = []
     room_title = ''
     if user_id is None:
         return redirect(url_for('login_page'))
@@ -130,7 +131,7 @@ def home_page():
         my_list = Room.get_all(user_id)   # room_id,room_name,owner_id一覧情報を降順で取得
         if my_list:     # my_listが空じゃなければ
             messages = Message.get_all(my_list[0]['room_id'])
-            
+            print(my_list[0]['room_id'])
             # ルーム名、ルームid、メンバーidをそれぞれ取得
             for itm in my_list:  
                 room_name .append(itm['room_name'])     # ルーム名一覧（List）
@@ -144,11 +145,10 @@ def home_page():
                     user_name.append(ms['user_name'])                           # ユーザー名一覧（List）
                     message_list.append(ms['original_message'])                 # メッセージ一覧（List）
                     message_id.append(ms['message_id'])                         # メッセージid一覧（List）
-                    translated_message_list.append(ms['translated_message'])    # 翻訳メッセージ一覧（List）
-                    
+            print(message_list)
         # フロント側で扱えるようレンダリング
         # ルーム名、ルームID、メンバーID、ルームのタイトル、ユーザー名、メッセージ、メッセージID、翻訳メッセージ
-        return render_template('room.html', room_name=room_name, room_id=room_id, member_id=member_id, room_title=room_title, user_name=user_name,message_list=message_list,message_id=message_id,translated_message_list=translated_message_list)
+        return render_template('room.html', room_name=room_name, room_id=room_id, member_id=member_id, room_title=room_title, user_name=user_name,message_list=message_list,message_id=message_id)
     
 
 # チャットルーム作成画面表示
@@ -169,6 +169,7 @@ def room_create():
         return redirect(url_for('login_page'))  # ←セッションがない場合login_page関数からログイン画面に戻る
 
     new_room_name = request.form.get('room-name')
+    user_email = request.form.get('user_email')
 
     print(f'新規ルーム名：{new_room_name}')
     if new_room_name == '':
@@ -176,15 +177,25 @@ def room_create():
         flash('ルーム名を入力してください')
     else: 
         room_name = Room.find_by_name(new_room_name)
-
         if room_name != None:
             print(f'{room_name}は既に存在します')
             flash(f'{room_name}は既に存在します')
         else:
             Room.create(user_id,new_room_name)
+            if user_email != '':
+                #メンバー追加に渡すuser_idとroom_idを取得
+                users = User.find_user(user_email)
+                rooms = Room.find_by_name(new_room_name)
+                # userが存在していれば登録
+                if users is None:
+                    print('ユーザーがいません')
+                    flash('ユーザーがいません')
+                    return redirect(url_for('room_create_page'))
+                else:
+                    Room.add_member(users['user_id'],rooms['room_id'])
+
             # 作成後は、作成したルームへ移動
             return redirect(url_for('home_page'))
-
     return redirect(url_for('room_create_page'))
     
 
@@ -194,19 +205,19 @@ def room_update_page():
     return render_template('room_page')
 
 
-
-# チャットルーム編集処理
-@app.route('/room/update', methods=['POST'])
-def room_update():
-    pass
-
-
 # チャットルーム削除処理
 @app.route('/room/delete', methods=['POST'])
-def room_delete():
-    pass
+def room_delete(room_id):
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))
 
-
+    Room.delete(room_id)
+    rooms = Room.find_by_id(room_id)
+    if rooms is None:
+        print('削除しました')
+        flash('削除しました')
+    return redirect(url_for('home_page'))
 
 # ルーム間の遷移(サンプルアプリのメッセージの詳細画面表示に該当)
 # なくてよさそう
@@ -218,22 +229,20 @@ def room_page():
     room_id = Room.get_all(user_id)
     return redirect(url_for('home_page'))
 
-    #ループ処理
 
 #------------------------------メッセージ関連--------------------------------------
 # メッセージ送信処理
 @app.route('/room/message', methods=['POST'])
 def message_create():
+    print(f'-------開始------')
     user_id = session.get('user_id')
     if user_id is None:
         return redirect(url_for('login_page'))
-    print(f'-------開始------')
     message = request.form.get('message')
     room_list = Room.get_all(user_id)
     room_id = room_list[0]['room_id']
     print(f'メッセージ：{message}')
     if message != '':
-        print(f'-------メッセージ------')
         Message.create(user_id, room_id, message)
     return redirect(url_for('home_page'))
     
@@ -251,7 +260,6 @@ def message_update(message_id):
     if message:
         Message.update(message_id, message)
     
-
 
 # メッセージ削除処理
 @app.route('/room/message/<message_id>', methods=['POST'])
