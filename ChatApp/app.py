@@ -112,35 +112,46 @@ def signup_process():
 
 
 #------------------------------チャットルーム関連--------------------------------------
-# ログイン後の初回ページ
+# ログイン or ルーム作成後の初回ページ
 @app.route('/room/message', methods=['GET'])
 def home_page():
     user_id = session.get('user_id')
     room_name = []
     room_id = []
     member_id = []
-    messages = []
+    user_name = []
+    message_list = []
+    message_id = []
+    translated_message_list = []
+    room_title = ''
     if user_id is None:
         return redirect(url_for('login_page'))
     else:
         my_list = Room.get_all(user_id)   # room_id,room_name,owner_id一覧情報を降順で取得
-        
-        # ルーム名、ルームid、メンバーidをそれぞれ取得
-        for itm in my_list:
-            room_name .append(itm['room_name'])
-            room_id .append(itm['room_id'])
-            member_id.append(itm['room_member_id'])
+        if my_list:     # my_listが空じゃなければ
+            messages = Message.get_all(my_list[0]['room_id'])
+            
+            # ルーム名、ルームid、メンバーidをそれぞれ取得
+            for itm in my_list:  
+                room_name .append(itm['room_name'])     # ルーム名一覧（List）
+                room_id .append(itm['room_id'])         # ルームid一覧（List）
+                member_id.append(itm['room_member_id']) # メンバーid一覧（List）                
+            room_title = room_name[0]                   # 選択したルームのタイトル（String）
 
-        # 本番では削除
-        if member_id:
-            messages = Message.get_all(room_id[0])
-            print(f'message：{messages}')
-        # フロント側でlist型で扱えるよう、room名一覧をmy_rooms、message一覧をmessagesの変数で利用できるようにレンダリング
-        return render_template('room.html',room_id=room_id, room_name=room_name, messages=messages)
+            # メッセージ情報取得
+            if messages:
+                for ms in messages:
+                    user_name.append(ms['user_name'])                           # ユーザー名一覧（List）
+                    message_list.append(ms['original_message'])                 # メッセージ一覧（List）
+                    message_id.append(ms['message_id'])                         # メッセージid一覧（List）
+                    translated_message_list.append(ms['translated_message'])    # 翻訳メッセージ一覧（List）
+                    
+        # フロント側で扱えるようレンダリング
+        # ルーム名、ルームID、メンバーID、ルームのタイトル、ユーザー名、メッセージ、メッセージID、翻訳メッセージ
+        return render_template('room.html', room_name=room_name, room_id=room_id, member_id=member_id, room_title=room_title, user_name=user_name,message_list=message_list,message_id=message_id,translated_message_list=translated_message_list)
     
 
 # チャットルーム作成画面表示
-#                                   ↓GET or POSTメソッドの確認
 @app.route('/room/create', methods=['GET'])
 def room_create_page():
     user_id = session.get('user_id')
@@ -170,73 +181,99 @@ def room_create():
             print(f'{room_name}は既に存在します')
             flash(f'{room_name}は既に存在します')
         else:
-            print(f'新ルーム：{new_room_name}は作成されました')
-            room_id = Room.create(user_id,new_room_name)
+            Room.create(user_id,new_room_name)
             # 作成後は、作成したルームへ移動
-            print(f'room_id：{room_id}')
-            return redirect(url_for('home_page',room_id=room_id))
+            return redirect(url_for('home_page'))
 
     return redirect(url_for('room_create_page'))
     
 
 # チャットルーム編集処理
-# 一時的に処理のため<cid>なし
-@app.route('/room/update/<cid>', methods=['GET'])
+@app.route('/room/update', methods=['GET'])
 def room_update_page():
     return render_template('room_page')
 
 
 
 # チャットルーム編集処理
-@app.route('/room/update/<cid>', methods=['POST'])
+@app.route('/room/update', methods=['POST'])
 def room_update():
     pass
 
 
 # チャットルーム削除処理
-@app.route('/room/delete/<cid>', methods=['POST'])
+@app.route('/room/delete', methods=['POST'])
 def room_delete():
     pass
 
 
 
 # ルーム間の遷移(サンプルアプリのメッセージの詳細画面表示に該当)
-@app.route('/room/<cid>/message', methods=['POST'])
-def room_page(cid):
+# なくてよさそう
+@app.route('/room/message', methods=['POST'])
+def room_page():
     user_id = session.get('user_id')
     if user_id is None:
         return redirect(url_for('login_page')) 
     room_id = Room.get_all(user_id)
-    
+    return redirect(url_for('home_page'))
 
     #ループ処理
-    
-    return render_template('message.html')
-
 
 #------------------------------メッセージ関連--------------------------------------
 # メッセージ送信処理
-@app.route('/room/<cid>/message', methods=['POST'])
+@app.route('/room/message', methods=['POST'])
 def message_create():
-    pass
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))
+    print(f'-------開始------')
+    message = request.form.get('message')
+    room_list = Room.get_all(user_id)
+    room_id = room_list[0]['room_id']
+    print(f'メッセージ：{message}')
+    if message != '':
+        print(f'-------メッセージ------')
+        Message.create(user_id, room_id, message)
+    return redirect(url_for('home_page'))
+    
 
 
 # メッセージ編集処理
-@app.route('/room/<cid>/message/<message_id>', methods=['POST'])
-def message_update():
-    pass
+@app.route('/room/message/<message_id>/update', methods=['POST'])
+def message_update(message_id):
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))
+
+    message = request.form.get('message')
+
+    if message:
+        Message.update(message_id, message)
+    
 
 
 # メッセージ削除処理
-@app.route('/room/<cid>/message/<message_id>', methods=['POST'])
-def message_delete():
-    pass
+@app.route('/room/message/<message_id>', methods=['POST'])
+def message_delete(message_id):
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))
+
+    Message.delete(message_id)
+    
 
 
 # メッセージ翻訳処理
-@app.route('/room/<cid>/message/<message_id>', methods=['POST'])
-def message_translation():
-    pass
+@app.route('/room/message/translation', methods=['POST'])
+def message_translation(message_id, translated_message):
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_page'))
+
+    Message.translate(message_id, translated_message)
+    
+
 
 
 # mainメソッド

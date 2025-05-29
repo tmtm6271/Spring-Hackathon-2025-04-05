@@ -85,7 +85,7 @@ class Room:
                 room_id = cur.lastrowid
                 print(f'ルームid：{room_id}')
                 sql = "INSERT INTO room_members (user_id, room_id, privilege) VALUES (%s, %s, %s);"
-                cur.execute(sql, (user_id,room_id, "admin",))
+                cur.execute(sql, (user_id,room_id, "admin"))
                 conn.commit()
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
@@ -141,7 +141,6 @@ class Room:
                    """
                 cur.execute(sql,(user_id))
                 rooms = cur.fetchall()
-                print(rooms)
                 return rooms
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
@@ -239,12 +238,12 @@ class Room:
 class Message:
     # メッセージ作成
     @classmethod
-    def create(cls,user_id, original_message):
+    def create(cls,user_id, room_id, original_message):
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO messages(room_member_id, original_message) VALUES(%s, %s, %s);"
-                cur.execute(sql, (user_id, original_message,))
+                sql = "INSERT INTO messages(user_id,room_id, original_message) VALUES(%s, %s, %s);"
+                cur.execute(sql, (user_id, room_id, original_message,))
                 conn.commit()
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
@@ -262,7 +261,7 @@ class Message:
                 sql = """
                    SELECT m.message_id, u.user_name, m.original_message, m.translated_message 
                    FROM messages AS m 
-                   INNER JOIN room_members AS r ON m.room_member_id = r.room_member_id 
+                   INNER JOIN room_members AS r ON m.room_id = r.room_id 
                    INNER JOIN users AS u ON u.user_id = r.user_id 
                    WHERE r.room_id = %s 
                    ORDER BY message_id DESC;

@@ -47,13 +47,15 @@ CREATE TABLE room_members(
 
 CREATE TABLE messages (
     message_id INT AUTO_INCREMENT PRIMARY KEY,
-    room_member_id INT,
+    user_id VARCHAR(255),
+    room_id INT,
     file_id INT,
     original_message TEXT NOT NULL,
     translated_message TEXT DEFAULT NULL,
     first_sent_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (room_member_id) REFERENCES room_members(room_member_id) ON DELETE CASCADE
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(room_id) REFERENCES rooms(room_id) ON DELETE CASCADE
 );
 
 CREATE TABLE files(
